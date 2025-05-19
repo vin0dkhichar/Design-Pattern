@@ -1,0 +1,245 @@
+# Creational Patterns: Provide object creation mechanisms that increase flexibility and reuse of 
+#                      existing code.
+
+# Structural patterns: Explain how to assemble objects and classes into larger structures, while 
+#                      keeping these structures flexible and efficient.
+
+# Behavioral patterns: Take care of effective communication and the assignment of responsibilities 
+#                      between objects.
+
+# Creational Patterns
+# Singleton Pattern: Ensures that a class has only one instance and provides a global point of 
+#                    access to that instance.
+
+# Factory Method Pattern: Defines an interface for creating objects, allowing subclasses to decide which 
+#                         class to instantiate.
+
+# Abstract Factory Pattern: Provides an interface for creating families of related or dependent objects
+#                           without specifying their concrete classes.
+
+# Builder Pattern: Separates the construction of a complex object from its representation, allowing the 
+#                  same construction process to create different representations.
+
+# Prototype Pattern: Creates new objects by copying an existing object, avoiding the overhead of 
+#                    creating objects from scratch.
+
+
+# Structural Patterns
+# Adapter Pattern: Converts the interface of a class into another interface that clients expect, 
+#                  enabling classes with incompatible interfaces to work together.
+
+# Bridge Pattern: Decouples an abstraction from its implementation, allowing both to evolve 
+#                 independently.
+
+# Composite Pattern: Composes objects into tree structures to represent part-whole hierarchies, making
+#                    it easier to work with individual objects and compositions.
+
+# Decorator Pattern: Dynamically adds responsibilities to objects, providing a flexible alternative to 
+#                    subclassing for extending functionality.
+
+# Facade Pattern: Provides a simplified interface to a complex subsystem, making it easier to use and 
+#                 understand.
+
+# Flyweight Pattern: Shares instances of objects to support large numbers of fine-grained objects 
+#                    efficiently.
+
+# Proxy Pattern: provide a substitute or placeholder for another object to control access to the 
+#                original object.
+
+
+# Behavioral Patterns
+# Chain of Responsibility Pattern: Creates a chain of objects that can handle requests, avoiding 
+#                                  coupling the sender with its receivers.
+
+# Command Pattern: Turns a request into a stand-alone object, allowing parameterization of clients with
+#                  different requests.
+
+# Interpreter Pattern: Defines a grammar for a language and an interpreter to interpret sentences in the 
+#                      language.
+
+# Iterator Pattern: Provides a way to access elements of a collection without exposing its underlying 
+#                   representation.
+
+# Mediator Pattern: Defines an object that centralizes communication between multiple objects, reducing 
+#                   direct dependencies between them.
+
+# Memento Pattern: Captures and restores an object’s internal state, allowing it to be restored to a 
+#                  previous state.
+
+# Observer Pattern: Defines a dependency between objects, ensuring that when one object changes state, 
+#                   all its dependents are notified and updated automatically.
+
+# State Pattern: Allows an object to change its behavior when its internal state changes, enabling 
+#                cleaner, more maintainable conditional logic.
+
+# Strategy Pattern: Defines a family of algorithms, encapsulates each one and makes them 
+#                   interchangeable. Clients can choose an algorithm from this family without
+#                   modifying their code.
+
+# Template Method Pattern: Defines the structure of an algorithm in a superclass but lets subclasses 
+#                          override specific steps of the algorithm.
+
+# Visitor Pattern: Separates an algorithm from an object structure, allowing new operations to be added 
+#                  without modifying the objects themselves.
+
+
+
+
+
+
+
+# Strategy Pattern -> Defines a family of algorithms, encapsulates each one,
+#                     and make them interchangeable. Strategy lets the algorithm
+#                     vary independently from clients that use it.
+
+
+# Observer Pattern -> Deﬁnes a one-to-many dependency between objects so that when one
+#                     object changes state, all of its dependents are notiﬁed and updated
+#                     automatically.
+
+
+# Decorator Pattern -> Attaches additional responsibilities to an object dynamically.
+#                      Decorators provide a ﬂexible alternative to subclassing for 
+#                      extending functionality.
+
+
+# Factory Method Pattern -> Deﬁnes an interface for creating an object, but lets subclasses decide 
+#                           which class to instantiate. Factory Method lets a class defer instantiation
+#                           to subclasses.
+
+
+# Abstract Factory Pattern -> Provides an interface for creating families of related or 
+#                             dependent objects without specifying their concrete classes.
+
+
+# Singleton Pattern -> Ensures a class has only one instance, and provides a global point
+#                      of access to it.
+
+
+# Command Pattern -> Encapsulates a request as an object, thereby letting you parameterize
+#                    client with different requests and support undoable operations.
+#                    When you need decouple an object making to requests from the objects
+#                    that know how to perform the requests, use the Command Pattern
+
+
+# Adapter Pattern -> Converts the interface of a class into another interface the clients expect. 
+#                    Adapter lets classes work together that couldn’t otherwise because of 
+#                    incompatible interfaces.
+
+
+# Facade Pattern -> Provides a uniﬁed interface to a set of interfaces in a subsytem. Facade deﬁnes 
+#                   a higher-level interface that makes the subsystem easier to use.
+
+
+# Template Method Pattern -> Deﬁnes the skeleton of an algorithm in a method, deferring some steps to
+#                            subclasses. Template Method lets subclasses redeﬁne certain steps of an 
+#                            algorithm without changing the algorithm’s structure.
+
+
+# Iterator Pattern -> Provides a way to access the elements of an aggregate object sequentially 
+#                     without exposing its underlying representation.
+
+
+# Composite Pattern -> Allows you to compose objects into tree structures to represent part-whole 
+#                      hierarchies. Composite lets clients treat individual objects and compositions
+#                      of objects uniformly.
+
+
+# State Pattern -> Allows an object to alter its behavior when its internal state changes. 
+#                  The object will appear to change its class.
+
+
+# Proxy Pattern -> Provides a surrogate or placeholder for another object to control access 
+#                  to it.
+
+
+# Compound Pattern -> Combines two or more patterns into a solution that solves a
+#                     recurring or general problem
+
+
+# Bridge Pattern -> Is a structural design pattern used to decouple an abstraction from its 
+#                   implementation, allowing both to vary independently. It's useful when you want to 
+#                   avoid a permanent binding between an abstraction and its implementation.
+
+
+# Builder Pattern ->  Is a creational pattern that allows you to construct complex objects 
+#                     step-by-step. It separates the construction of a complex object from its 
+#                     representation, so the same construction process can create different 
+#                     representations.
+
+
+# Chain Of Responsibilities Pattern -> Is a behavioral pattern that lets you pass a request along 
+#                                      a chain of potential handlers until one of them handles it.
+
+
+# Flyweight Pattern -> Is a structural pattern used to minimize memory usage by sharing as much 
+#                      data as possible with similar objects. It achieves this by storing shared 
+#                      data (intrinsic state) externally and passing it in when needed 
+#                      (extrinsic state).
+
+
+# Interpreter Pattern -> Is a behavioral design pattern that provides a way to evaluate sentences in 
+#                        a language. It defines a grammar for interpreting expressions and allows you
+#                        to interpret a language (often represented by expressions or sentences). 
+#                        This pattern is useful for designing and interpreting languages, such as 
+#                        mathematical expressions, programming languages, or command processing.
+
+
+# Mediator Pattern -> Is a behavioral design pattern that defines an object that encapsulates how 
+#                     a set of objects interact. Instead of letting objects communicate directly 
+#                     with each other, they communicate through a mediator. This reduces the 
+#                     dependency between the communicating objects and promotes loose coupling.
+#                     The Mediator centralizes the communication logic between objects, allowing 
+#                     them to stay independent of each other. This is particularly useful in 
+#                     situations where objects need to interact but should not be directly 
+#                     dependent on one another.
+
+
+# Memento Pattern -> Is a behavioral design pattern that allows capturing and externalizing an 
+#                    object's internal state without violating its encapsulation, so that the object
+#                    can be restored to this state later. It is essentially used to implement 
+#                    undo/redo functionality, allowing objects to revert to previous states without 
+#                    exposing the implementation details of their state.
+
+
+# Prototype Pattern -> Is a creational design pattern that allows an object to create a copy of itself. 
+#                      Instead of creating new objects through a constructor, a prototype allows for 
+#                      cloning existing objects, making it especially useful when the creation of a 
+#                      new object is costly in terms of time or resources. The pattern involves 
+#                      defining a prototype interface with a method for cloning objects.
+
+
+# Visitor Pattern -> Is a behavioral design pattern that allows you to add further operations to 
+#                    objects without having to modify the objects themselves. This pattern is used 
+#                    when you have a structure of objects that need to perform operations on them, 
+#                    but you want to add these operations without altering the objects' classes.
+
+
+
+# The NoCommand object is an example of a null object. A null object is useful
+# when you don’t have a meaningful object to return, and yet you want to remove
+# the responsibility for handling null from the client. For instance, in our remote
+# control we didn’t have a meaningful object to assign to each slot out of the box,
+# so we provided a NoCommand object that acts as a surrogate and does nothing
+# when its execute method is called.
+# You’ll find uses for Null Objects in conjunction with many Design Patterns and
+# sometimes you’ll even see Null Object listed as a Design Pattern.
+
+
+# A Pattern is a solution to a problem in a context.
+
+# The context is the situation in which the pattern applies. This should be a recurring situation.
+
+# The problem refers to the goal you are trying to achieve in this context, but it also refers to any 
+# constraints that occur in the context.
+
+# The solution is what you’re after: a general design that anyone can apply which resolves the goal and
+# set of constraints.
+
+# Keep it simple (KISS)
+
+# Design Patterns aren’t a magic bullet; in fact they’re not even a bullet!
+
+# Take out what you don’t really need. Don’t be afraid to remove a Design Pattern from your design.
+
+# If you don’t need it now, don’t do it now.

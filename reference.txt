@@ -1,0 +1,2 @@
+https://python-patterns.guide/
+https://refactoring.guru/design-patterns

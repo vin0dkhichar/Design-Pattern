@@ -1,0 +1,159 @@
+Encapsulate what varies
+
+Favor composition over inheritance
+
+Program to interfaces not implementations
+
+Strive for loosely coupled designs between objects that interact.
+
+Classes should be open for extension, but closed for modiﬁcation.
+
+Depend upon abstractions. Do not depend upon concrete classes.
+
+Only talk to your immediate friends.
+
+Don’t call us, we’ll call you.
+
+A class should have only one reason to change.
+
+
+SOLID Principles
+
+# Single Responsibility Principle (SRP)
+# Definition: A class should have only one reason to change, meaning that it should only have one 
+#             job or responsibility.
+# Reason: This principle reduces the complexity of the code by ensuring that each class has one 
+#         clear responsibility, making it easier to understand, maintain, and modify.
+# Example: If you have a UserManager class, it should not be responsible for logging or sending 
+#          emails. Logging and emailing should be handled by other classes (Logger, EmailSender).
+
+
+
+# Open/Closed Principle (OCP)
+# Definition: Software entities (classes, modules, functions) should be open for extension, but 
+#             closed for modification.
+# Reason: This principle allows the system to grow and adapt to new requirements without changing 
+#         existing code, thus minimizing the risk of breaking existing functionality.
+# Example: A PaymentProcessor class can be extended to support new payment methods like credit cards 
+#          or PayPal without modifying the original code, just by adding new classes that implement
+#          a common interface.
+
+
+
+# Liskov Substitution Principle (LSP)
+# Definition: Objects of a superclass should be replaceable with objects of its subclasses without 
+#             affecting the correctness of the program.
+# Reason: Ensures that derived classes extend the behavior of the base class without changing its 
+#         behavior in a way that would break functionality.
+# Example: If you have a Bird class and a Penguin subclass, you should be able to use Penguin 
+#          wherever a Bird is used (e.g., calling a fly() method should not cause an error).
+
+
+
+# Interface Segregation Principle (ISP)
+# Definition: Clients should not be forced to depend on interfaces they do not use.
+# Reason: This principle encourages the creation of smaller, more specific interfaces, ensuring that 
+#         classes only need to implement methods they actually use, improving flexibility and 
+#         reducing the impact of changes.
+# Example: Instead of having a generic Employee interface with many methods, you could split it into 
+#          specific interfaces like IWorkable, IPayable, and IDisposable that only include relevant 
+#          methods.
+
+
+
+# Dependency Inversion Principle (DIP)
+# Definition: High-level modules should not depend on low-level modules. Both should depend on 
+#             abstractions. Abstractions should not depend on details. Details should depend on 
+#             abstractions.
+# Reason: This principle helps to decouple components, making it easier to change and extend the 
+#         system without affecting the entire structure. It encourages the use of interfaces or 
+#         abstract classes to define dependencies.
+# Example: Instead of a PaymentService class directly depending on a PaypalPayment class, it should 
+#          depend on an abstraction like IPaymentMethod so that you can easily switch to a 
+#          StripePayment without modifying PaymentService.
+
+
+
+# Favor Composition Over Inheritance
+# Definition: Instead of inheriting behavior from a parent class, prefer composing objects with 
+#             desired behavior.
+# Reason: Composition allows for greater flexibility and reusability compared to inheritance. It 
+#         avoids tight coupling between classes, which can lead to brittle designs.
+# Example: Instead of a Dog class inheriting from an Animal class and adding many behaviors 
+#          (e.g., bark(), fetch()), create a BarkBehavior and FetchBehavior class and compose them 
+#          into a Dog class.
+
+
+
+# Encapsulation
+# Definition: Hide the internal state and require all interaction to be performed through an object's
+#             methods (interface).
+# Reason: Encapsulation ensures that the internal workings of a class are hidden from the outside 
+#         world, preventing external code from manipulating the object in unexpected ways and 
+#         reducing complexity.
+# Example: A BankAccount class might keep the balance private and provide methods like deposit() and 
+#          withdraw() to interact with the balance.
+
+
+
+# Don't Repeat Yourself (DRY)
+# Definition: Every piece of knowledge or logic should have a single, unambiguous representation in 
+#             the system.
+# Reason: Repetition of code leads to more errors, increases maintenance cost, and makes code harder
+#         to understand. By avoiding duplication, code becomes cleaner, more modular, and easier to 
+#         maintain.
+# Example: Instead of writing the same validation logic in multiple places, create a single 
+#          validation function that can be reused throughout the system.
+
+
+
+# Keep It Simple, Stupid (KISS)
+# Definition: Simplicity should be a key goal in design, and unnecessary complexity should be avoided.
+# Reason: The simpler the system, the easier it is to understand, maintain, and extend. Complexity 
+#         often introduces bugs, requires more testing, and is harder to debug.
+# Example: If you're building a function to calculate the total of a list, avoid over-engineering it 
+#          with complicated algorithms. A simple loop is often more effective than attempting to 
+#          implement a complex sorting algorithm.
+
+
+
+# You Aren't Gonna Need It (YAGNI)
+# Definition: Don't add functionality unless it's necessary. Focus on the requirements at hand and 
+#             avoid premature optimization.
+# Reason: Adding features or functionality that aren’t needed right now wastes time and resources and
+#         may lead to unnecessary complexity. Build only what you need.
+# Example: If you're designing a user interface for a basic app, don’t add complex features like dark
+#          mode or localization support unless it’s explicitly requested or needed for the first 
+#          version.
+
+
+
+# Composition Over Inheritance
+# Definition: Prefer combining small, reusable objects (composition) instead of inheriting behavior
+#             from large objects (inheritance).
+# Reason: Composition allows more flexibility, reduces tight coupling between components, and 
+#         encourages more maintainable code.
+# Example: Instead of creating a hierarchy of classes for different types of Employee 
+#          (like Manager, Engineer), you might prefer composing Employee objects with different
+#          behaviors or responsibilities (like EmployeeWithBonus, EmployeeWithStockOptions).
+
+
+
+# Law of Demeter (LoD)
+# Definition: A module should not know about the internal details of the objects it manipulates. It 
+#             should interact only with objects that are closely related to it.
+# Reason: This minimizes the dependency between different modules and reduces the risk of changes 
+#         propagating through the system.
+# Example: If an object A has a method getB(), and B has a method getC(), you should not call 
+#          A.getB().getC(). Instead, A should either directly provide C or delegate the task to B.
+
+
+
+# Separation of Concerns (SoC)
+# Definition: Different concerns (or aspects) of software should be separated into distinct sections, 
+#             each of which addresses a specific part of the problem.
+# Reason: This makes the code more modular and easier to understand. Each module focuses on a 
+#         specific functionality and can be maintained or modified independently.
+# Example: In a web application, the presentation (UI) layer, business logic layer, and data access 
+#          layer should be separated into different modules.
+
