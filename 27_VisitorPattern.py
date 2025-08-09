@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-# Visitor Interface
+# Visitor Interface 
 class Visitor(ABC):
     @abstractmethod
     def visit_salaried(self, salaried_employee):
@@ -68,8 +68,8 @@ if __name__ == "__main__":
     # Create employee objects
     employees = [
         SalariedEmployee("Alice", 60000),
-        HourlyEmployee("Bob", 25, 160),  # 160 hours worked
-        ContractEmployee("Charlie", 50, 6)  # 6 months contract
+        HourlyEmployee("Bob", 25, 160),
+        ContractEmployee("Charlie", 50, 6)
     ]
 
     # Create visitor (Tax calculation)
