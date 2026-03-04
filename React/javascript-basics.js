@@ -1,5 +1,5 @@
 /* ================================
-   1. Variables & Data Types
+1. Variables & Data Types
 ================================ */
 
 /*
@@ -19,8 +19,8 @@ console.log(userName1, userAge1, isActive);
 
 // const with objects (common interview question)
 const user1 = { name: "Bob" };
-user1.name = "Charlie";  // ✅ This works! (mutating object)
-// user1 = {};           // ❌ This fails! (reassigning)
+user1.name = "Charlie";  // This works! (mutating object)
+// user1 = {};           // This fails! (reassigning)
 
 
 /* ================================
@@ -62,7 +62,7 @@ function addNumbers(a, b) {
 }
 
 // Function Expression (not hoisted)
-const subtractNumbers = function(a, b) {
+const subtractNumbers = function (a, b) {
   return a - b;
 };
 
@@ -94,30 +94,30 @@ Hoisting: Variable and function declarations are moved to top of their scope
   let blockScoped = "I exist only here";
   const alsoBlockScoped = "Me too";
 }
-// console.log(blockScoped); // ❌ ReferenceError
+// console.log(blockScoped); // ReferenceError
 
 // Function scope with var
 function demo() {
   if (true) {
     var functionScoped = "I leak out of the if block";
   }
-  console.log(functionScoped); // ✅ Works
+  console.log(functionScoped); // Works
 }
 
 // Hoisting example
-hoisted(); // ✅ Works (function declaration is hoisted)
+hoisted(); // Works (function declaration is hoisted)
 function hoisted() {
   console.log("Hoisted function");
 }
 
-// notHoisted(); // ❌ Cannot access before initialization
+// notHoisted(); // Cannot access before initialization
 const notHoisted = () => {
   console.log("Not hoisted");
 };
 
 // Temporal Dead Zone
 {
-  // console.log(x); // ❌ ReferenceError (TDZ)
+  // console.log(x); // ReferenceError (TDZ)
   let x = 5;
 }
 
@@ -136,7 +136,7 @@ even after the outer function has finished executing.
 
 function createCounter() {
   let count = 0; // Private variable
-  
+
   return function () {
     count++;
     return count;
@@ -151,7 +151,7 @@ console.log(counter1()); // 3
 // Practical closure example: Private variables
 function createBankAccount(initialBalance) {
   let balance = initialBalance; // Private variable
-  
+
   return {
     deposit(amount) {
       balance += amount;
@@ -171,7 +171,7 @@ function createBankAccount(initialBalance) {
 const myAccount = createBankAccount(100);
 console.log(myAccount.deposit(50));    // 150
 console.log(myAccount.withdraw(30));   // 120
-// console.log(balance); // ❌ Cannot access private variable
+// console.log(balance); // Cannot access private variable
 
 
 /* ================================
@@ -233,9 +233,9 @@ const user2 = {
   id: 1,
   name: "Bob",
   email: "bob@example.com",
-  address: { 
-    city: "Delhi", 
-    zip: "110001" 
+  address: {
+    city: "Delhi",
+    zip: "110001"
   }
 };
 
@@ -287,7 +287,7 @@ const person1 = {
   }
 };
 
-person1.greet();      // "Hello, Rahul" ✅
+person1.greet();      // "Hello, Rahul"
 person1.greetArrow(); // undefined (arrow functions don't bind 'this')
 
 // this in different contexts
@@ -298,13 +298,13 @@ function regularFunction() {
 // Event handler issue (common interview question)
 const button = {
   text: "Click me",
-  click: function() {
+  click: function () {
     console.log(this.text);
   }
 };
 
-button.click(); // "Click me" ✅
-// setTimeout(button.click, 1000); // undefined ❌ (loses context)
+button.click(); // "Click me"
+// setTimeout(button.click, 1000); // undefined (loses context)
 
 // Solutions:
 // 1. Arrow function
@@ -387,7 +387,7 @@ async function loadMultiple() {
 // Promise.race (first promise to resolve/reject wins)
 Promise.race([
   fetchDataPromise(),
-  new Promise((_, reject) => 
+  new Promise((_, reject) =>
     setTimeout(() => reject("Timeout"), 5000)
   )
 ]);
@@ -484,7 +484,7 @@ function debounce(fn, delay) {
 
   return function (...args) {
     clearTimeout(timer); // Cancel previous timer
-    
+
     timer = setTimeout(() => {
       fn.apply(this, args); // Execute after delay
     }, delay);
@@ -520,7 +520,7 @@ function throttle(fn, delay) {
 
   return function (...args) {
     const now = Date.now();
-    
+
     if (now - lastCall >= delay) {
       lastCall = now;
       fn.apply(this, args);
@@ -554,8 +554,8 @@ const originalObj = {
 const shallow1 = { ...originalObj };
 const shallow2 = Object.assign({}, originalObj);
 
-shallow1.name = "Bob";           // ✅ Original unchanged
-shallow1.address.city = "Mumbai"; // ❌ Original CHANGED (nested reference)
+shallow1.name = "Bob";           // Original unchanged
+shallow1.address.city = "Mumbai"; // Original CHANGED (nested reference)
 
 // Deep copy (copies all levels)
 const deep1 = JSON.parse(JSON.stringify(originalObj)); // Simple but has limitations
@@ -564,10 +564,10 @@ const deep1 = JSON.parse(JSON.stringify(originalObj)); // Simple but has limitat
 // Better deep copy (for complex objects)
 function deepCopy(obj) {
   if (obj === null || typeof obj !== "object") return obj;
-  
+
   if (obj instanceof Date) return new Date(obj);
   if (obj instanceof Array) return obj.map(item => deepCopy(item));
-  
+
   const copy = {};
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
@@ -641,7 +641,7 @@ function PersonConstructor(name, age) {
 }
 
 // Add method to prototype (shared across all instances)
-PersonConstructor.prototype.greet = function() {
+PersonConstructor.prototype.greet = function () {
   return `Hi, I'm ${this.name}`;
 };
 
@@ -660,7 +660,7 @@ class Animal {
   constructor(name) {
     this.name = name;
   }
-  
+
   speak() {
     return `${this.name} makes a sound`;
   }
@@ -671,7 +671,7 @@ class Dog extends Animal {
     super(name); // Call parent constructor
     this.breed = breed;
   }
-  
+
   speak() {
     return `${this.name} barks`;
   }
@@ -700,8 +700,8 @@ function addThreeNumbers(a, b, c) {
 
 // Curried version
 function curriedAdd(a) {
-  return function(b) {
-    return function(c) {
+  return function (b) {
+    return function (c) {
       return a + b + c;
     };
   };
@@ -714,7 +714,7 @@ const curriedAddArrow = a => b => c => a + b + c;
 
 // Practical example
 function multiplyBy(a) {
-  return function(b) {
+  return function (b) {
     return a * b;
   };
 }
@@ -731,7 +731,7 @@ function curry(fn) {
     if (args.length >= fn.length) {
       return fn.apply(this, args);
     } else {
-      return function(...nextArgs) {
+      return function (...nextArgs) {
         return curried.apply(this, args.concat(nextArgs));
       };
     }
@@ -755,15 +755,15 @@ WHERE: React.memo, useMemo, expensive calculations, recursive functions
 
 function memoize(fn) {
   const cache = {};
-  
-  return function(...args) {
+
+  return function (...args) {
     const key = JSON.stringify(args);
-    
+
     if (key in cache) {
       console.log("Fetching from cache:", key);
       return cache[key];
     }
-    
+
     console.log("Calculating result for:", key);
     const result = fn.apply(this, args);
     cache[key] = result;
@@ -806,7 +806,7 @@ console.log(performOperation(5, 3, (x, y) => x * y)); // 15
 
 // Function that returns function
 function createMultiplier(multiplier) {
-  return function(number) {
+  return function (number) {
     return number * multiplier;
   };
 }
@@ -816,7 +816,7 @@ console.log(multiplyBy5(10)); // 50
 
 // Practical example: Array filter
 function createFilter(condition) {
-  return function(array) {
+  return function (array) {
     return array.filter(condition);
   };
 }
@@ -836,7 +836,7 @@ WHERE: Understanding internals, legacy browser support
 
 // Polyfill for Array.prototype.map
 if (!Array.prototype.myMap) {
-  Array.prototype.myMap = function(callback) {
+  Array.prototype.myMap = function (callback) {
     const result = [];
     for (let i = 0; i < this.length; i++) {
       result.push(callback(this[i], i, this));
@@ -848,7 +848,7 @@ if (!Array.prototype.myMap) {
 console.log([1, 2, 3].myMap(x => x * 2)); // [2, 4, 6]
 
 // Polyfill for Array.prototype.filter
-Array.prototype.myFilter = function(callback) {
+Array.prototype.myFilter = function (callback) {
   const result = [];
   for (let i = 0; i < this.length; i++) {
     if (callback(this[i], i, this)) {
@@ -859,21 +859,21 @@ Array.prototype.myFilter = function(callback) {
 };
 
 // Polyfill for Array.prototype.reduce
-Array.prototype.myReduce = function(callback, initialValue) {
+Array.prototype.myReduce = function (callback, initialValue) {
   let accumulator = initialValue !== undefined ? initialValue : this[0];
   let startIndex = initialValue !== undefined ? 0 : 1;
-  
+
   for (let i = startIndex; i < this.length; i++) {
     accumulator = callback(accumulator, this[i], i, this);
   }
-  
+
   return accumulator;
 };
 
 // Polyfill for bind
-Function.prototype.myBind = function(context, ...args) {
+Function.prototype.myBind = function (context, ...args) {
   const fn = this;
-  return function(...newArgs) {
+  return function (...newArgs) {
     return fn.apply(context, [...args, ...newArgs]);
   };
 };
@@ -891,7 +891,7 @@ WHERE: API calls, file operations, any async task
 // Creating a Promise
 const myPromise = new Promise((resolve, reject) => {
   const success = true;
-  
+
   if (success) {
     resolve("Operation successful");
   } else {
@@ -918,17 +918,17 @@ fetchDataPromise()
   });
 
 // Implementing Promise.all manually
-Promise.myAll = function(promises) {
+Promise.myAll = function (promises) {
   return new Promise((resolve, reject) => {
     const results = [];
     let completed = 0;
-    
+
     promises.forEach((promise, index) => {
       Promise.resolve(promise)
         .then(value => {
           results[index] = value;
           completed++;
-          
+
           if (completed === promises.length) {
             resolve(results);
           }
@@ -1016,7 +1016,7 @@ function findMostFrequent(arr) {
   const frequency = {};
   let maxCount = 0;
   let mostFrequent;
-  
+
   arr.forEach(item => {
     frequency[item] = (frequency[item] || 0) + 1;
     if (frequency[item] > maxCount) {
@@ -1024,7 +1024,7 @@ function findMostFrequent(arr) {
       mostFrequent = item;
     }
   });
-  
+
   return mostFrequent;
 }
 
@@ -1095,14 +1095,14 @@ PROTOTYPES & THIS:
 - Arrow functions don't bind 'this'
 
 KEY INTERVIEW TOPICS:
-1. Closures ⭐⭐⭐
-2. Promises & Async/Await ⭐⭐⭐
-3. Event Loop ⭐⭐⭐
-4. Array methods (map, filter, reduce) ⭐⭐⭐
-5. Debounce/Throttle ⭐⭐
-6. Deep vs Shallow copy ⭐⭐
-7. Hoisting & Scope ⭐⭐
-8. this keyword ⭐⭐
-9. Prototypes ⭐
-10. Currying & Memoization ⭐
+1. Closures
+2. Promises & Async/Await
+3. Event Loop
+4. Array methods (map, filter, reduce)
+5. Debounce/Throttle
+6. Deep vs Shallow copy
+7. Hoisting & Scope
+8. this keyword
+9. Prototypes
+10. Currying & Memoization
 */
