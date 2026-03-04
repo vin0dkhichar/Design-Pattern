@@ -1,0 +1,756 @@
+/* ================================
+1. WHAT IS REDUX?
+================================ */
+
+/*
+WHY:
+- Predictable global state management
+- Single source of truth
+- Easier debugging (time-travel, DevTools)
+
+WHERE:
+- Large apps with complex shared state
+- When prop drilling or Context becomes unmanageable
+*/
+
+// Redux is a state management library.
+// State lives in ONE store, updated via dispatched actions,
+// processed by pure reducer functions.
+
+// Key principles:
+// - Single source of truth (one store)
+// - State is read-only (only actions can trigger changes)
+// - Changes via pure functions (reducers)
+
+
+/* ================================
+2. CORE CONCEPTS OVERVIEW
+================================ */
+
+/*
+STORE   → holds the entire app state tree
+ACTION  → plain object describing what happened { type, payload }
+REDUCER → pure function: (state, action) => newState
+DISPATCH→ sends an action to the store
+SELECTOR→ reads/derives data from the store
+*/
+
+// Data flow:
+// UI → dispatch(action) → reducer → new state → UI re-renders
+
+
+/* ================================
+3. WITHOUT REDUX TOOLKIT (CLASSIC)
+================================ */
+
+/*
+WHY:
+- Understanding the foundation before RTK
+- Legacy codebases still use this
+
+WHERE:
+- Older React projects
+*/
+
+import { createStore } from "redux";
+
+// Action types
+const INCREMENT = "INCREMENT";
+const DECREMENT = "DECREMENT";
+
+// Action creators
+const increment = () => ({ type: INCREMENT });
+const decrement = () => ({ type: DECREMENT });
+
+// Reducer
+function counterReducer(state = { count: 0 }, action) {
+  switch (action.type) {
+    case INCREMENT: return { count: state.count + 1 };
+    case DECREMENT: return { count: state.count - 1 };
+    default: return state;
+  }
+}
+
+// Store
+const store = createStore(counterReducer);
+
+store.dispatch(increment());
+console.log(store.getState()); // { count: 1 }
+
+/*
+PROBLEMS with classic Redux:
+- Too much boilerplate
+- Mutable state bugs (easy to accidentally mutate)
+- Middleware setup is verbose
+→ Redux Toolkit (RTK) solves all of these
+*/
+
+
+/* ================================
+4. REDUX TOOLKIT (RTK) — MODERN STANDARD
+================================ */
+
+/*
+WHY:
+- Official, recommended way to use Redux
+- Eliminates boilerplate
+- Immer built-in (write "mutating" code safely)
+- createSlice combines actions + reducers
+
+WHERE:
+- All modern Redux projects
+*/
+
+import { configureStore, createSlice } from "@reduxjs/toolkit";
+
+// createSlice — defines state + reducers + actions together
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: { count: 0 },
+  reducers: {
+    increment: (state) => { state.count += 1; }, // Immer: looks mutable, is safe
+    decrement: (state) => { state.count -= 1; },
+    incrementByAmount: (state, action) => {
+      state.count += action.payload;
+    },
+  },
+});
+
+// Auto-generated action creators
+export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+
+// Store
+const store = configureStore({
+  reducer: {
+    counter: counterSlice.reducer,
+  },
+});
+
+
+/* ================================
+5. CONNECTING REDUX TO REACT
+================================ */
+
+/*
+WHY:
+- React components need to read state and dispatch actions
+
+WHERE:
+- Root of the app (Provider), any component (hooks)
+*/
+
+import { Provider } from "react-redux";
+
+// Wrap the app
+function App() {
+  return (
+    <Provider store={store}>
+      <Counter />
+    </Provider>
+  );
+}
+
+
+/* ================================
+6. useSelector — READ STATE
+================================ */
+
+/*
+WHY:
+- Subscribe to a slice of the store
+- Re-renders only when selected value changes
+
+WHERE:
+- Any component that needs store data
+*/
+
+import { useSelector } from "react-redux";
+
+function Counter() {
+  const count = useSelector((state) => state.counter.count);
+
+  return <p>{count}</p>;
+}
+
+/*
+KEY POINTS:
+- Runs on every store update
+- Shallow equality check by default
+- Return the smallest value needed (avoid selecting the whole state)
+*/
+
+
+/* ================================
+7. useDispatch — SEND ACTIONS
+================================ */
+
+/*
+WHY:
+- Trigger state changes from components
+
+WHERE:
+- Buttons, forms, events
+*/
+
+import { useDispatch } from "react-redux";
+
+function Counter() {
+  const count = useSelector((state) => state.counter.count);
+  const dispatch = useDispatch();
+
+  return (
+    <>
+      <p>{count}</p>
+      <button onClick={() => dispatch(increment())}>+</button>
+      <button onClick={() => dispatch(incrementByAmount(5))}>+5</button>
+    </>
+  );
+}
+
+
+/* ================================
+8. SLICES
+================================ */
+
+/*
+WHY:
+- Organizes state by feature
+- Each slice owns its own state, reducers, and actions
+
+WHERE:
+- One slice per feature: authSlice, cartSlice, uiSlice
+*/
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState: { user: null, isLoggedIn: false },
+  reducers: {
+    login:  (state, action) => {
+      state.user = action.payload;
+      state.isLoggedIn = true;
+    },
+    logout: (state) => {
+      state.user = null;
+      state.isLoggedIn = false;
+    },
+  },
+});
+
+export const { login, logout } = authSlice.actions;
+export default authSlice.reducer;
+
+
+/* ================================
+9. COMBINING REDUCERS
+================================ */
+
+/*
+WHY:
+- Split state into feature slices
+- configureStore merges them
+
+WHERE:
+- Every real Redux app
+*/
+
+const store = configureStore({
+  reducer: {
+    counter: counterSlice.reducer,
+    auth:    authSlice.reducer,
+    cart:    cartSlice.reducer,
+  },
+});
+
+// State shape:
+// {
+//   counter: { count: 0 },
+//   auth:    { user: null, isLoggedIn: false },
+//   cart:    { items: [] }
+// }
+
+
+/* ================================
+10. IMMER — MUTATING SAFELY
+================================ */
+
+/*
+WHY:
+- Redux requires IMMUTABLE updates
+- Immer lets you write mutating code; it produces a new object behind the scenes
+- RTK includes Immer automatically
+
+WHERE:
+- Inside createSlice reducers ONLY
+*/
+
+// Without Immer (verbose, error-prone)
+case ADD_ITEM:
+  return {
+    ...state,
+    items: [...state.items, action.payload]
+  };
+
+// With Immer (via RTK)
+addItem: (state, action) => {
+  state.items.push(action.payload); // looks mutating, but is safe
+}
+
+/*
+CRITICAL:
+- Do NOT use Immer-style mutations outside of RTK slice reducers
+- Never return AND mutate — do one or the other
+*/
+
+// Wrong
+addItem: (state, action) => {
+  state.items.push(action.payload);
+  return state; // don't return when mutating
+}
+
+// Correct — mutate
+addItem: (state, action) => {
+  state.items.push(action.payload);
+}
+
+// Correct — return new value
+addItem: (state, action) => {
+  return { ...state, items: [...state.items, action.payload] };
+}
+
+
+/* ================================
+11. ASYNC ACTIONS — createAsyncThunk
+================================ */
+
+/*
+WHY:
+- Redux reducers must be synchronous
+- createAsyncThunk handles async logic (API calls)
+- Automatically dispatches: pending / fulfilled / rejected actions
+
+WHERE:
+- API calls, authentication, data fetching
+*/
+
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+// Define async thunk
+export const fetchUser = createAsyncThunk(
+  "user/fetchUser",        // action type prefix
+  async (userId, thunkAPI) => {
+    const res = await fetch(`/api/users/${userId}`);
+    if (!res.ok) throw new Error("Failed to fetch");
+    return await res.json(); // becomes action.payload in fulfilled
+  }
+);
+
+// Handle in slice
+const userSlice = createSlice({
+  name: "user",
+  initialState: { data: null, status: "idle", error: null },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUser.pending,   (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.data = action.payload;
+      })
+      .addCase(fetchUser.rejected,  (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
+  },
+});
+
+// Dispatch from component
+dispatch(fetchUser(42));
+
+
+/* ================================
+12. ASYNC STATUS PATTERN
+================================ */
+
+/*
+WHY:
+- Consistent way to handle loading/error/success across the app
+
+WHERE:
+- Any async data fetching
+*/
+
+// Standard slice state shape for async data
+initialState: {
+  data:   null,
+  status: "idle",    // "idle" | "loading" | "succeeded" | "failed"
+  error:  null,
+}
+
+// In component
+function UserProfile() {
+  const { data, status, error } = useSelector((s) => s.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (status === "idle") dispatch(fetchUser(1));
+  }, [status, dispatch]);
+
+  if (status === "loading")   return <Spinner />;
+  if (status === "failed")    return <p>Error: {error}</p>;
+  if (status === "succeeded") return <p>{data.name}</p>;
+}
+
+
+/* ================================
+13. SELECTORS
+================================ */
+
+/*
+WHY:
+- Encapsulate state access logic
+- Derive computed data without storing it
+- Reusable across components
+
+WHERE:
+- Any non-trivial state access
+*/
+
+// Simple selectors (inline is fine)
+const count = useSelector((state) => state.counter.count);
+
+// Derived selectors (co-locate with the slice)
+export const selectCompletedTodos = (state) =>
+  state.todos.items.filter(t => t.completed);
+
+// Component usage
+const completedTodos = useSelector(selectCompletedTodos);
+
+
+/* ================================
+14. MEMOIZED SELECTORS — createSelector
+================================ */
+
+/*
+WHY:
+- Recomputes only when inputs change
+- Prevents unnecessary re-renders from derived data
+- Essential for expensive calculations on large state
+
+WHERE:
+- Filtered lists, aggregations, derived data
+*/
+
+import { createSelector } from "@reduxjs/toolkit";
+
+const selectTodos       = (state) => state.todos.items;
+const selectFilter      = (state) => state.todos.filter;
+
+export const selectVisibleTodos = createSelector(
+  [selectTodos, selectFilter],
+  (todos, filter) => {
+    if (filter === "completed") return todos.filter(t => t.completed);
+    if (filter === "active")    return todos.filter(t => !t.completed);
+    return todos;
+  }
+);
+
+// Only recalculates when todos or filter actually change
+const visibleTodos = useSelector(selectVisibleTodos);
+
+
+/* ================================
+15. MIDDLEWARE
+================================ */
+
+/*
+WHY:
+- Intercepts actions before they reach the reducer
+- Enables logging, crash reporting, async logic
+
+WHERE:
+- Debugging, analytics, side effects
+
+Built-in middleware in RTK:
+- redux-thunk (included by default)
+- serializability check
+- immutability check
+*/
+
+import { configureStore } from "@reduxjs/toolkit";
+
+// Custom middleware
+const loggerMiddleware = (store) => (next) => (action) => {
+  console.log("Dispatching:", action);
+  const result = next(action);
+  console.log("Next state:", store.getState());
+  return result;
+};
+
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(loggerMiddleware),
+});
+
+/*
+Middleware signature:
+store => next => action => { ... return next(action) }
+*/
+
+
+/* ================================
+16. RTK QUERY — DATA FETCHING
+================================ */
+
+/*
+WHY:
+- Built-in data fetching + caching solution in RTK
+- Eliminates the need for manual loading/error/data state
+- Automatic cache invalidation and re-fetching
+
+WHERE:
+- REST API integration (replaces React Query in Redux projects)
+*/
+
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+export const usersApi = createApi({
+  reducerPath: "usersApi",
+  baseQuery: fetchBaseQuery({ baseUrl: "/api" }),
+  endpoints: (builder) => ({
+    getUser:   builder.query({ query: (id) => `/users/${id}` }),
+    getUsers:  builder.query({ query: () => "/users" }),
+    createUser: builder.mutation({
+      query: (body) => ({ url: "/users", method: "POST", body }),
+    }),
+  }),
+});
+
+export const { useGetUserQuery, useGetUsersQuery, useCreateUserMutation } = usersApi;
+
+// Add to store
+const store = configureStore({
+  reducer: {
+    [usersApi.reducerPath]: usersApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(usersApi.middleware),
+});
+
+// Use in component
+function UserProfile({ id }) {
+  const { data, isLoading, isError } = useGetUserQuery(id);
+
+  if (isLoading) return <Spinner />;
+  if (isError)   return <p>Error</p>;
+  return <p>{data.name}</p>;
+}
+
+
+/* ================================
+17. FOLDER STRUCTURE
+================================ */
+
+/*
+WHY:
+- Feature-based structure scales well
+- Co-locates slice, selectors, and thunks
+
+Recommended:
+*/
+
+src/
+  store/
+    store.js          // configureStore
+    rootReducer.js    // optional combined reducer
+  features/
+    counter/
+      counterSlice.js // createSlice + thunks + selectors
+      Counter.jsx
+    auth/
+      authSlice.js
+      Login.jsx
+    todos/
+      todosSlice.js
+      TodoList.jsx
+
+
+/* ================================
+18. REDUX DEVTOOLS
+================================ */
+
+/*
+WHY:
+- Inspect every dispatched action
+- Time-travel debugging (step back/forward through state)
+- Diff state before/after each action
+
+WHERE:
+- Development only
+
+Setup:
+- configureStore() enables it automatically in RTK
+- Install "Redux DevTools" browser extension
+*/
+
+
+/* ================================
+19. WHEN TO USE REDUX vs CONTEXT
+================================ */
+
+/*
+Use CONTEXT when:
+- Passing static/infrequently changing data (theme, locale, auth user)
+- Small/medium apps
+- Avoiding extra dependencies
+
+Use REDUX when:
+- Frequent updates (Context re-renders all consumers on every change)
+- Complex state logic (multiple reducers, derived data)
+- Many components read/write the same state
+- You need DevTools / time-travel debugging
+- Async workflows with status tracking
+
+Rule of thumb:
+→ Start with useState + Context
+→ Migrate to Redux when state logic becomes painful
+*/
+
+
+/* ================================
+20. COMMON INTERVIEW QUESTIONS
+================================ */
+
+/*
+Q: What is the Redux data flow?
+A:
+  UI dispatches action → middleware (if any) → reducer → new state → UI re-renders
+
+Q: What is a pure function? Why do reducers need to be pure?
+A:
+  Pure function: same inputs always produce same output, no side effects.
+  Reducers must be pure so state updates are predictable and testable.
+
+Q: What is the difference between action and action creator?
+A:
+  Action → plain object: { type: "INCREMENT", payload: 1 }
+  Action creator → function that returns an action
+
+Q: What does createSlice do?
+A:
+  Combines initialState, reducers, and auto-generates action creators + types.
+  Reduces boilerplate significantly over classic Redux.
+
+Q: What is the difference between extraReducers and reducers in a slice?
+A:
+  reducers → handle actions defined IN this slice
+  extraReducers → handle actions from OTHER slices or createAsyncThunk
+
+Q: What is Immer and why does RTK include it?
+A:
+  Immer lets you write "mutating" code that safely produces immutable updates.
+  RTK uses it inside createSlice reducers to remove the need for spread syntax.
+
+Q: What is createSelector used for?
+A:
+  Memoized selector — only recomputes when inputs change.
+  Prevents unnecessary re-renders caused by new object references.
+
+Q: What is Redux Thunk?
+A:
+  Middleware that lets you dispatch functions instead of plain objects.
+  The function receives dispatch and getState, enabling async logic.
+  Included by default in RTK.
+
+Q: Redux vs Zustand vs Context?
+A:
+  Context    → simple, built-in, no devtools, re-renders all consumers
+  Redux      → structured, devtools, scalable, more boilerplate
+  Zustand    → lightweight, minimal boilerplate, no Provider needed
+*/
+
+
+/* ================================
+21. COMMON PITFALLS
+================================ */
+
+/*
+1. Selecting too much state
+  const state = useSelector(state => state)
+  const count = useSelector(state => state.counter.count)
+
+2. Returning AND mutating in a reducer (Immer)
+  state.items.push(item); return state;
+  state.items.push(item);  // OR return newState — pick one
+
+3. Putting non-serializable data in store
+  Dates, functions, class instances, Promises
+  Store plain data; derive/transform in selectors or components
+
+4. Dispatching in reducers
+  Reducers must be pure — no dispatch calls inside
+
+5. Forgetting default case in classic reducer
+  Always return state in the default branch
+
+6. Over-using Redux
+  Not everything needs to be global — UI state (isOpen, inputValue)
+  belongs in local useState
+*/
+
+
+/* ================================
+22. REDUX vs ZUSTAND (QUICK COMPARE)
+================================ */
+
+/*
+                  Redux (RTK)         Zustand
+──────────────────────────────────────────────────
+Boilerplate       Medium              Minimal
+Provider needed   Yes                 No
+DevTools          Excellent           Basic
+Middleware        Built-in            Manual
+Async             createAsyncThunk    Manual / custom
+Best for          Large scale apps    Small-medium apps
+Learning curve    Moderate            Low
+*/
+
+
+/*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FULL TOPIC CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Core
+  What is Redux (principles)
+  Core concepts: Store, Action, Reducer, Dispatch, Selector
+  Classic Redux (foundation)
+  Redux Toolkit (RTK) — modern standard
+  createSlice
+  configureStore + combining reducers
+  Immer (safe mutations)
+
+React Integration
+  Provider setup
+  useSelector
+  useDispatch
+
+Async
+  createAsyncThunk
+  pending / fulfilled / rejected pattern
+  Async status pattern (idle/loading/succeeded/failed)
+  RTK Query (built-in data fetching + caching)
+
+Advanced
+  Selectors (simple + co-located)
+  createSelector (memoized)
+  Middleware (concept + custom)
+  Redux DevTools
+  Folder structure (feature-based)
+
+Decision Making
+  Redux vs Context
+  Redux vs Zustand
+  When NOT to use Redux
+*/

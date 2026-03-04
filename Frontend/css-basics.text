@@ -1,0 +1,984 @@
+/* ================================
+1. WHAT IS CSS?
+================================ */
+
+/*
+WHY:
+- Styles HTML
+- Controls layout, spacing, colors, animations
+
+WHERE:
+- Every web application
+*/
+
+CSS (Cascading Style Sheets) defines how HTML elements are displayed.
+
+
+/* ================================
+2. CSS SYNTAX
+================================ */
+
+/*
+selector {
+  property: value;
+}
+*/
+
+h1 {
+  color: red;
+  font-size: 24px;
+}
+
+
+/* ================================
+3. CSS SELECTORS
+================================ */
+
+/*
+WHY:
+- Target elements precisely
+
+WHERE:
+- Styling components, layouts
+*/
+
+/* Element selector */
+p { color: black; }
+
+/* Class selector */
+.card { border: 1px solid #ccc; }
+
+/* ID selector */
+#header { background: blue; }
+
+/* Descendant */
+.container p { color: red; }
+
+/* Child */
+ul > li { list-style: none; }
+
+/* Attribute */
+input[type="text"] { border: 1px solid; }
+
+/* Pseudo-class */
+button:hover { background: green; }
+
+/* Pseudo-element */
+p::first-letter { font-size: 2rem; }
+
+
+/* ================================
+4. CASCADE & SPECIFICITY
+================================ */
+
+/*
+WHY:
+- Determines which style wins
+
+Order of priority:
+1. !important
+2. Inline styles
+3. ID selectors
+4. Class / attribute / pseudo-class
+5. Element selectors
+*/
+
+p { color: red; }
+.text { color: blue; }
+#main { color: green; }
+
+/* #main wins */
+
+p {
+  color: red !important; /* wins everything avoid */
+}
+
+
+/* ================================
+5. BOX MODEL
+================================ */
+
+/*
+WHY:
+- Core layout concept
+
+WHERE:
+- Spacing, alignment bugs
+*/
+
+.box {
+  width: 200px;
+  padding: 20px;
+  border: 5px solid black;
+  margin: 10px;
+}
+
+/*
+Total width = width + padding + border
+*/
+
+* {
+  box-sizing: border-box; /* industry standard */
+}
+
+
+/* ================================
+6. DISPLAY PROPERTY
+================================ */
+
+/*
+WHY:
+- Controls layout behavior
+*/
+
+display: block;        /* div, p */
+display: inline;       /* span */
+display: inline-block; /* mix */
+display: none;         /* removed from layout */
+display: flex;
+display: grid;
+
+
+/* ================================
+7. POSITIONING
+================================ */
+
+/*
+WHY:
+- Control element placement
+
+WHERE:
+- Modals, tooltips, sticky headers
+*/
+
+position: static;   /* default */
+position: relative; /* reference point */
+position: absolute; /* relative to nearest positioned ancestor */
+position: fixed;    /* viewport */
+position: sticky;   /* hybrid */
+
+
+/* ================================
+8. Z-INDEX
+================================ */
+
+/*
+WHY:
+- Control stacking order
+
+RULE:
+- Works only on positioned elements
+*/
+
+.modal {
+  position: fixed;
+  z-index: 999;
+}
+
+
+/* ================================
+9. FLEXBOX
+================================ */
+
+/*
+WHY:
+- One-dimensional layout (row OR column)
+
+WHERE:
+- Navbars, cards, alignment
+*/
+
+.container {
+  display: flex;
+
+  flex-direction: row; /* row | column */
+  justify-content: space-between; /* main axis */
+  align-items: center; /* cross axis */
+  gap: 16px;
+}
+
+.item {
+  flex: 1; /* grow */
+}
+
+/*
+justify-content → main axis
+align-items → cross axis
+*/
+
+
+/* ================================
+10. FLEX INTERVIEW PITFALL
+================================ */
+
+/*
+Q: Difference between align-items & align-content?
+
+align-items:
+- Aligns ITEMS on a single line
+
+align-content:
+- Aligns LINES (needs flex-wrap)
+*/
+
+
+/* ================================
+11. GRID
+================================ */
+
+/*
+WHY:
+- Two-dimensional layout
+
+WHERE:
+- Dashboards, page layouts
+*/
+
+.grid {
+  display: grid;
+
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: auto;
+  gap: 20px;
+}
+
+.item1 {
+  grid-column: 1 / 3;
+}
+
+/*
+Flex → components
+Grid → page layout
+*/
+
+
+/* ================================
+12. RESPONSIVE DESIGN
+================================ */
+
+/*
+WHY:
+- Mobile, tablet, desktop support
+*/
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+}
+
+
+/* ================================
+13. UNITS
+================================ */
+
+/*
+px   → fixed
+%    → relative
+vw/vh → viewport
+em   → relative to parent
+rem  → relative to root (html)
+*/
+
+html {
+  font-size: 16px;
+}
+
+p {
+  font-size: 1.5rem; /* 24px */
+}
+
+
+/* ================================
+14. COLORS
+================================ */
+
+color: red;
+color: #ff0000;
+color: rgb(255, 0, 0);
+color: rgba(255, 0, 0, 0.5);
+color: hsl(0, 100%, 50%);
+
+
+/* ================================
+15. FONTS & TEXT
+================================ */
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.5;
+}
+
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+/* ================================
+   16. OVERFLOW
+================================ */
+
+overflow: hidden;
+overflow: scroll;
+overflow: auto;
+
+
+/* ================================
+17. VISIBILITY vs DISPLAY
+================================ */
+
+/*
+display: none;
+- Removed from layout
+
+visibility: hidden;
+- Takes space but invisible
+
+opacity: 0;
+- Takes space, invisible, but still interactive (catches clicks)
+*/
+
+
+/* ================================
+18. ANIMATIONS
+================================ */
+
+/*
+WHY:
+- Smooth UI transitions
+
+WHERE:
+- Modals, hover effects
+*/
+
+.button {
+  transition: background 0.3s ease;
+}
+
+.button:hover {
+  background: green;
+}
+
+
+/* ================================
+19. KEYFRAME ANIMATIONS
+================================ */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  animation: fadeIn 0.5s ease-in;
+}
+
+
+/* ================================
+20. TRANSFORM
+================================ */
+
+transform: translateX(20px);
+transform: scale(1.2);
+transform: rotate(45deg);
+
+
+/* ================================
+21. CSS VARIABLES
+================================ */
+
+/*
+WHY:
+- Theme support
+- Reusability
+*/
+
+:root {
+  --primary-color: #007bff;
+}
+
+.button {
+  background: var(--primary-color);
+}
+
+
+/* ================================
+22. BEM METHODOLOGY
+================================ */
+
+/*
+WHY:
+- Scalable CSS
+
+Block__Element--Modifier
+*/
+
+.card {}
+.card__title {}
+.card--active {}
+
+
+/* ================================
+23. CSS PERFORMANCE
+================================ */
+
+/*
+AVOID:
+Deep selectors
+Excessive !important
+Layout thrashing (reading then writing layout in loops)
+
+BEST:
+Use transform & opacity for animations (GPU-composited, no reflow)
+Use box-sizing: border-box
+Use will-change: transform sparingly for heavy animations
+*/
+
+
+/* ================================
+24. COMMON INTERVIEW QUESTIONS
+================================ */
+
+/*
+Q: inline vs inline-block?
+A:
+inline → no width/height
+inline-block → allows width/height
+
+Q: absolute vs relative?
+A:
+absolute → relative to nearest positioned parent
+
+Q: flex vs grid?
+A:
+flex → 1D
+grid → 2D
+
+Q: margin collapse?
+A:
+Vertical margins collapse between block elements
+*/
+
+
+/* ================================
+25. CSS + REACT CONNECTION
+================================ */
+
+/*
+- CSS Modules → scoped styles
+- Styled-components → CSS-in-JS
+- Utility CSS → Tailwind
+*/
+
+
+/* ================================
+26. STACKING CONTEXT
+================================ */
+
+/*
+WHY:
+- Explains why z-index sometimes has no effect
+- A new stacking context is created by certain properties
+
+WHERE:
+- z-index bugs in modals, dropdowns
+
+A NEW stacking context is created when an element has:
+- position + z-index (not auto)
+- opacity < 1
+- transform, filter, will-change
+- isolation: isolate
+
+Elements inside a stacking context are ordered ONLY within it.
+z-index of 999 inside a low-stacking-context won't beat z-index: 1 outside.
+*/
+
+.parent {
+  position: relative;
+  z-index: 1; /* creates stacking context */
+}
+
+.child {
+  z-index: 9999; /* only competes INSIDE parent context */
+}
+
+/* Fix: use isolation */
+.modal-wrapper {
+  isolation: isolate; /* explicitly creates a context */
+}
+
+
+/* ================================
+27. PSEUDO-CLASSES (ADVANCED)
+================================ */
+
+/*
+WHY:
+- Style elements based on state or position without JS
+
+WHERE:
+- Forms, lists, interactive elements
+*/
+
+/* Form state */
+input:focus       { outline: 2px solid blue; }
+input:disabled    { opacity: 0.5; }
+input:checked     { accent-color: green; }
+input:valid       { border-color: green; }
+input:invalid     { border-color: red; }
+
+/* Structural */
+li:first-child    { font-weight: bold; }
+li:last-child     { border-bottom: none; }
+li:nth-child(2n)  { background: #f0f0f0; } /* even rows */
+li:nth-child(odd) { background: #fff; }
+p:not(.special)   { color: gray; }
+
+
+/* ===============================
+28. PSEUDO-ELEMENTS (ADVANCED)
+================================ */
+
+/*
+WHY:
+- Insert/style content without extra HTML
+
+WHERE:
+- Decorative elements, clearfix, custom bullets
+*/
+
+/* Content injection */
+.required::after {
+  content: " *";
+  color: red;
+}
+
+/* Clearfix (classic float fix) */
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* Custom underline */
+.link::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: blue;
+  transition: width 0.3s;
+}
+
+.link:hover::before {
+  width: 100%;
+}
+
+
+/* ================================
+29. CSS GRID (ADVANCED)
+================================ */
+
+/*
+WHY:
+- Template areas for readable layouts
+- Implicit vs explicit grids
+
+WHERE:
+- Full page layouts, card grids
+*/
+
+/* Named template areas */
+.layout {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "sidebar main"
+    "footer footer";
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+.header  { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.main    { grid-area: main; }
+.footer  { grid-area: footer; }
+
+/* Auto-fill responsive grid (no media queries needed) */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+/*
+auto-fill  → creates as many columns as fit (may leave empty tracks)
+auto-fit   → collapses empty tracks, stretches items to fill space
+*/
+
+
+/* ================================
+30. FLEXBOX (ADVANCED)
+================================ */
+
+/*
+WHY:
+- flex shorthand is commonly misunderstood
+
+flex: grow shrink basis;
+*/
+
+.item { flex: 1; }       /* flex: 1 1 0%  — grow equally from 0 */
+.item { flex: auto; }    /* flex: 1 1 auto — grow from natural size */
+.item { flex: none; }    /* flex: 0 0 auto — fixed size, no grow/shrink */
+
+/* Wrapping */
+.container {
+  flex-wrap: wrap;  /* items wrap to next line instead of shrinking */
+}
+
+/* Reordering */
+.item {
+  order: -1; /* moves before other items (default is 0) */
+}
+
+/* Align individual item */
+.item {
+  align-self: flex-end; /* overrides container's align-items */
+}
+
+
+/* ================================
+31. MARGIN COLLAPSE (DETAIL)
+================================ */
+
+/*
+WHY:
+- Common source of spacing bugs
+
+RULES:
+1. Adjacent siblings → margins collapse to the LARGER value
+2. Parent and first/last child → parent absorbs child margin
+3. Empty blocks → top + bottom margin collapse into one
+
+DOES NOT collapse:
+- Flex/grid children
+- Elements with padding/border/overflow (on parent)
+- Inline-block elements
+*/
+
+/* Example — 20px gap, not 40px */
+.a { margin-bottom: 20px; }
+.b { margin-top: 20px; }
+
+/* Fix parent/child collapse */
+.parent {
+  overflow: hidden; /* or padding-top: 1px; or display: flex */
+}
+
+
+/* ================================
+32. SPECIFICITY CALCULATION
+================================ */
+
+/*
+Specificity is a 4-part score: (inline, id, class/attr/pseudo-class, element/pseudo-element)
+
+Selector                      Score
+─────────────────────────────────────────
+*                             0,0,0,0
+p                             0,0,0,1
+p::first-line                 0,0,0,2
+.class                        0,0,1,0
+p.class                       0,0,1,1
+[href]                        0,0,1,0
+:hover                        0,0,1,0
+#id                           0,1,0,0
+style=""                      1,0,0,0
+!important                    overrides everything
+
+Higher score wins.
+Ties → last declaration wins.
+
+TIP: Avoid increasing specificity to fix bugs.
+     Prefer adding a class over using !important.
+*/
+
+
+/* ================================
+33. CSS CUSTOM PROPERTIES (ADVANCED)
+================================ */
+
+/*
+WHY:
+- Dynamic theming (JS can update them)
+- Scoped variables per component
+
+WHERE:
+- Dark mode, design tokens
+*/
+
+/* Global theme */
+:root {
+  --color-primary: #007bff;
+  --color-bg: #ffffff;
+  --spacing-md: 16px;
+}
+
+/* Dark mode using media query */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1a1a1a;
+    --color-primary: #66b2ff;
+  }
+}
+
+/* Scoped to component */
+.card {
+  --card-padding: 24px;
+  padding: var(--card-padding);
+}
+
+/* JavaScript can update */
+document.documentElement.style.setProperty("--color-primary", "#ff0000");
+
+/* Fallback value */
+color: var(--color-accent, #333); /* uses #333 if variable is undefined */
+
+
+/* ================================
+34. RESPONSIVE DESIGN (ADVANCED)
+================================ */
+
+/*
+WHY:
+- Mobile-first is the industry standard
+
+Strategy:
+- Write mobile styles first
+- Use min-width breakpoints to scale UP
+
+WHERE:
+- Every production app
+*/
+
+/* Mobile-first (preferred) */
+.container {
+  flex-direction: column; /* mobile default */
+}
+
+@media (min-width: 768px) {
+  .container {
+    flex-direction: row; /* tablet and up */
+  }
+}
+
+/* Common breakpoints */
+/* sm  ≥ 640px  */
+/* md  ≥ 768px  */
+/* lg  ≥ 1024px */
+/* xl  ≥ 1280px */
+
+/* Responsive typography */
+h1 {
+  font-size: clamp(1.5rem, 4vw, 3rem); /* min, preferred, max */
+}
+
+/* Container query (modern — style based on parent width, not viewport) */
+@container (min-width: 400px) {
+  .card {
+    flex-direction: row;
+  }
+}
+
+.card-wrapper {
+  container-type: inline-size; /* enables container queries on children */
+}
+
+
+/* ================================
+35. CSS RESETS & NORMALIZE
+================================ */
+
+/*
+WHY:
+- Browsers apply different default styles
+- Reset removes all defaults
+- Normalize preserves useful defaults while fixing inconsistencies
+
+WHERE:
+- Top of every stylesheet
+*/
+
+/* Minimal modern reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+img, video {
+  max-width: 100%;
+  display: block;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/* ================================
+36. CSS LAYERS (@layer)
+================================ */
+
+/*
+WHY:
+- Modern way to manage cascade without !important wars
+- Control specificity order across layers
+
+WHERE:
+- Design systems, large codebases, Tailwind integration
+*/
+
+@layer reset, base, components, utilities;
+
+@layer reset {
+  * { box-sizing: border-box; margin: 0; }
+}
+
+@layer base {
+  h1 { font-size: 2rem; }
+}
+
+@layer components {
+  .btn { padding: 8px 16px; }
+}
+
+@layer utilities {
+  .mt-4 { margin-top: 16px; }
+}
+
+/*
+NOTE:
+- Later-declared layers win over earlier ones (regardless of specificity)
+- Unlayered styles beat ALL layers
+*/
+
+
+/* ================================
+37. LOGICAL PROPERTIES
+================================ */
+
+/*
+WHY:
+- Support RTL (right-to-left) languages automatically
+- Future-proof, more semantic
+
+WHERE:
+- Internationalized apps
+*/
+
+/* Old way */
+.box {
+  margin-left: 16px;
+  padding-top: 8px;
+  border-right: 1px solid;
+}
+
+/* New logical way */
+.box {
+  margin-inline-start: 16px; /* left in LTR, right in RTL */
+  padding-block-start: 8px;  /* top in LTR, bottom in vertical */
+  border-inline-end: 1px solid;
+}
+
+/*
+inline → horizontal axis
+block  → vertical axis
+start/end → beginning/end of axis
+*/
+
+
+/* ================================
+38. COMMON CSS INTERVIEW QUESTIONS (ADDITIONS)
+================================ */
+
+/*
+Q: What is the difference between em and rem?
+A:
+  em  → relative to the PARENT element's font-size (compounds through nesting)
+  rem → always relative to the ROOT (html) font-size (predictable)
+
+Q: How does position: sticky work?
+A:
+  Acts like relative until a scroll threshold, then behaves like fixed.
+  Requires a defined top/bottom/left/right value.
+  Stays within its parent container (stops sticking when parent scrolls out).
+
+Q: What triggers layout reflow (expensive)?
+A:
+  Changes to: width, height, padding, margin, font-size, top/left.
+  Reading: offsetWidth, scrollTop, getBoundingClientRect.
+  Use transform instead of top/left for animations.
+
+Q: What is a CSS stacking context?
+A:
+  An isolated z-index group. Created by position+z-index, opacity<1, transform, etc.
+  Children compete only within their own context.
+
+Q: What is the difference between transition and animation?
+A:
+  transition → triggered by state change (hover, class toggle); A to B
+  animation  → runs independently; uses @keyframes; can loop, delay, reverse
+
+Q: What is specificity and how is it calculated?
+A:
+  (inline, id, class/attr/pseudo-class, element) — higher score wins.
+  Ties resolved by source order.
+*/
+
+
+/*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FULL TOPIC CHECKLIST
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Core
+  Selectors (element, class, ID, attribute, pseudo)
+  Cascade & Specificity (+ calculation detail)
+  Box Model
+  Display property
+  Positioning
+  Z-index (+ stacking context)
+  Units (px, %, em, rem, vw/vh, clamp)
+  Colors
+  Fonts & Text
+  Overflow
+  Visibility vs Display vs Opacity
+
+Layout
+  Flexbox (+ advanced: flex shorthand, wrap, order, align-self)
+  Grid (+ advanced: template areas, auto-fill/fit)
+  Margin Collapse (+ full rules)
+  Responsive Design (+ mobile-first, container queries, clamp)
+  CSS Resets & Normalize
+
+Advanced
+  CSS Variables (+ dark mode, JS update, fallback)
+  CSS Layers (@layer)
+  Logical Properties
+  Pseudo-classes (advanced: :nth-child, :not, form states)
+  Pseudo-elements (advanced: ::before/::after, clearfix)
+  Animations & Transitions
+  Keyframes
+  Transform
+  CSS Performance (reflow, GPU compositing)
+
+Architecture
+  BEM Methodology
+  CSS + React (Modules, Styled-components, Tailwind)
+*/
