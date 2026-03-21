@@ -74,6 +74,183 @@ const WelcomeArrow = ({ name }) => {
   return <h1>Hello, {name}</h1>;
 };
 
+//“Both are functional components. The main differences are arrow functions don’t have their own this, are not hoisted, and allow more concise syntax with implicit returns.” 
+
+/*
+Execution Context (Why hoisting exists)
+
+Before running your code, JavaScript does a memory setup phase:
+
+Scans the code
+Stores variables & functions in memory
+Then executes line by line
+
+This pre-processing is what we call hoisting
+
+1. Why function is hoisted
+sayHello();
+
+function sayHello() {
+  console.log("Hello");
+}
+
+✅ Works because:
+
+During memory phase:
+
+sayHello = function() { console.log("Hello"); }
+
+Entire function is stored in memory before execution starts
+
+So when JS reaches sayHello(), it already exists.
+
+2. Why arrow function is NOT hoisted
+sayHello(); // ❌ Error
+
+const sayHello = () => {
+  console.log("Hello");
+};
+
+During memory phase:
+
+sayHello = uninitialized (Temporal Dead Zone)
+const and let are hoisted BUT
+They are NOT initialized immediately
+They stay in TDZ (Temporal Dead Zone)
+
+So calling before definition → error
+
+3. Key Difference (CORE REASON)
+Function Declaration
+function greet() {}
+Stored fully in memory
+Ready to use immediately
+Arrow Function
+const greet = () => {}
+Treated like a variable
+Only gets value during execution
+Not available before that
+
+4. Visual Timeline
+Function
+Memory Phase:
+greet → function()
+
+Execution Phase:
+greet() ✅ works
+Arrow Function
+Memory Phase:
+greet → uninitialized (TDZ)
+
+Execution Phase:
+greet = function()
+greet() ✅ (only after this line)
+
+5. Important Subtle Point
+
+Even this fails:
+
+var greet = () => console.log("hi");
+
+greet(); // ❌ TypeError if called before assignment
+
+Why?
+
+Memory phase:
+
+greet = undefined
+
+So:
+
+greet(); // undefined is not a function
+
+“
+  Function declarations are hoisted because JavaScript stores the entire function in memory during the creation phase, 
+  while arrow functions are treated as variables and only get initialized during execution, so they cannot be used before definition.
+”
+
+TDZ = the time between when a variable is declared and when it is initialized, where accessing it throws an error.
+
+🔹 Simple Definition
+
+Temporal Dead Zone is the period where a let or const variable exists in memory but cannot be accessed yet.
+
+🔹 Example
+console.log(a); // ❌ ReferenceError
+
+let a = 10;
+
+👉 Why error?
+
+a is hoisted (it exists in memory)
+But it's in TDZ until this line:
+let a = 10;
+
+So before initialization → ❌ cannot access
+
+🔹 Timeline Visualization
+{
+  // TDZ starts here
+  console.log(a); ❌
+
+  let a = 10;     // TDZ ends here
+
+  console.log(a); ✅ 10
+}
+
+TDZ exists from start of scope → until initialization
+
+🔹 Compare with var
+console.log(x); // ✅ undefined
+
+var x = 10;
+
+Why no error?
+
+var is initialized with undefined during memory phase
+No TDZ
+🔹 Why TDZ exists (IMPORTANT)
+
+JavaScript designers added TDZ to:
+
+1. Prevent bugs
+let count = count + 1; // ❌ error instead of weird undefined behavior
+2. Enforce proper usage
+Forces you to declare before using
+Makes code more predictable
+🔹 TDZ with const
+const x; // ❌ SyntaxError
+const must be initialized immediately
+It stays in TDZ until assigned
+🔹 TDZ in Block Scope
+{
+  console.log(a); // ❌ TDZ
+
+  let a = 5;
+}
+
+TDZ is block-scoped
+
+🔹 Real Interview Trap
+let a = 10;
+
+function test() {
+  console.log(a); // ❌ TDZ
+  let a = 20;
+}
+
+test();
+
+👉 Why error?
+
+Inner a shadows outer a
+Inside function → a is in TDZ
+
+“TDZ is the time between variable declaration and initialization where let and const variables cannot be accessed, even though they are hoisted.”
+
+*/
+
+
 // Usage
 <Welcome name="Alice" />;
 
@@ -171,9 +348,9 @@ WHERE:
 - Authentication, loaders, feature flags
 */
 
-{isLoggedIn && <Dashboard />}
+{ isLoggedIn && <Dashboard /> }
 
-{isLoading ? <Loader /> : <Content />}
+{ isLoading ? <Loader /> : <Content /> }
 
 if (!user) {
   return <Login />;
@@ -599,7 +776,7 @@ function reducer(state, action) {
   switch (action.type) {
     case "increment": return { count: state.count + 1 };
     case "decrement": return { count: state.count - 1 };
-    case "reset":     return initialState;
+    case "reset": return initialState;
     default: throw new Error("Unknown action");
   }
 }
@@ -874,6 +1051,12 @@ componentDidMount     →  useEffect(() => {}, [])
 componentDidUpdate    →  useEffect(() => {}, [dep])
 componentWillUnmount  →  useEffect(() => { return () => cleanup }, [])
 shouldComponentUpdate →  React.memo / useMemo
+
+React components go through three main phases:
+
+Mounting – component is created and inserted into the DOM
+Updating – component re-renders due to props/state changes
+Unmounting – component is removed from the DOM
 */
 
 
@@ -899,10 +1082,10 @@ function App() {
         <Link to="/about">About</Link>
       </nav>
       <Routes>
-        <Route path="/"        element={<Home />} />
-        <Route path="/about"   element={<About />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="/user/:id" element={<UserPage />} />
-        <Route path="*"        element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

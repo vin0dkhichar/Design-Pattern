@@ -1,0 +1,451 @@
+🔹 Helm + Kubernetes
+Q: What is Helm?
+→ Helm is a package manager for Kubernetes that helps define, install, and manage applications.
+Q: What is values.yaml?
+→ It is a configuration file used to pass environment-specific values (like dev/prod settings).
+Q: What are Helm templates?
+→ They are Kubernetes YAML files with placeholders that get dynamically filled using values.
+Q: What are rolling updates?
+→ A deployment strategy where new pods are gradually replaced without downtime.
+Q: What is the pod lifecycle?
+→ Stages: Pending → Running → Succeeded/Failed → Terminating.
+Q: What are liveness and readiness probes?
+→ Liveness checks if container is alive; readiness checks if it can serve traffic.
+Q: ConfigMap vs Secret?
+→ ConfigMap stores plain config; Secret stores sensitive data (encoded).
+
+🔹 Next.js + FastAPI
+Q: What is Next.js?
+→ A React framework for building frontend apps with SSR/CSR/ISR support.
+Q: What is FastAPI?
+→ A Python backend framework for building high-performance APIs.
+Q: What is ASGI?
+→ Async Server Gateway Interface that allows handling multiple requests concurrently.
+Q: Why async/await in FastAPI?
+→ Enables non-blocking I/O, improving performance for concurrent requests.
+Q: What is automatic OpenAPI docs?
+→ FastAPI auto-generates API docs (Swagger) from code and type hints.
+Q: What is SSR?
+→ Server renders HTML on each request.
+Q: What is CSR?
+→ Browser renders UI using JavaScript.
+Q: What is ISR?
+→ Static pages that update periodically without full rebuild.
+“SSR renders pages on the server and sends fully prepared HTML to the client, which improves SEO and initial load performance. CSR, on the other hand, renders content in the browser using JavaScript, which gives better interactivity but slower first load. The main trade-off is between SEO and initial performance vs client-side flexibility and reduced server load.”
+
+
+
+🔹 OIDC (OpenID Connect)
+Q: What is OIDC?
+→ An authentication protocol built on OAuth2 that provides user identity.
+Q: What is the OIDC flow?
+→ Redirect → login → authorization code → exchange for tokens.
+Q: What is an ID token?
+→ A JWT that contains user identity information.
+Q: What is an access token?
+→ A token used to access protected APIs.
+Q: What is a refresh token?
+→ Used to get new tokens without logging in again.
+Q: What is JWT validation?
+→ Verifying signature, expiry, issuer, and audience.
+
+🔹 OAuth 2.0
+Q: What is OAuth 2.0?
+→ An authorization framework that allows apps to access user resources without sharing passwords.
+Q: Simple example?
+→ “Login with Google” → app gets access to your profile without knowing your password.
+🔹 Key Idea
+Q: What problem does OAuth solve?
+→ Securely delegate access to third-party apps.
+🔹 Roles in OAuth
+Q: Who are the main roles?
+→ Resource Owner → User
+→ Client → Your app
+→ Authorization Server → Auth provider (Google, eSignet)
+→ Resource Server → API server
+🔹 Tokens
+Q: What is an access token?
+→ A token used to access protected APIs.
+Q: What is a refresh token?
+→ Used to get a new access token when it expires.
+🔹 OAuth Flow (Authorization Code Flow – MOST IMPORTANT)
+Q: What is the flow?
+Client redirects user → Authorization Server
+User logs in and gives permission
+Server returns authorization code
+Client exchanges code → access token
+Client calls API using access token
+🔹 Why Authorization Code Flow?
+Q: Why is it secure?
+→ Token is exchanged on backend, not exposed in browser.
+🔹 Other Flows (basic idea)
+Q: Implicit flow?
+→ Token returned directly (less secure, mostly deprecated)
+Q: Client Credentials flow?
+→ Machine-to-machine communication (no user)
+Q: Password flow?
+→ User shares password directly (not recommended)
+🔹 OAuth vs Authentication
+Q: Does OAuth authenticate users?
+→ No, it only authorizes access
+Q: Then how do we get user identity?
+→ Use OIDC (OpenID Connect) on top of OAuth
+🔹 Where JWT comes in
+Q: Is access token always JWT?
+→ Often yes, but can also be opaque tokens.
+Q: What does JWT contain?
+→ Claims like user ID, permissions, expiry.
+🔹 Security Concepts
+Q: What is scope?
+→ Defines what access is allowed (e.g., read profile).
+Q: What is redirect URI?
+→ URL where auth server sends response (must be registered).
+Q: What is state parameter?
+→ Prevents CSRF attacks.
+🔹 Real Flow Example
+Q: Example in your project (eSignet)?
+→ User → eSignet login → returns code → backend exchanges → gets tokens → API access
+
+Q: Storing access token insecurely?
+→ Risk of token theft
+Q: Using OAuth instead of OIDC for login?
+→ Missing identity layer
+
+“OAuth 2.0 is an authorization framework that allows applications to access user resources without sharing credentials. It works by issuing access tokens after user consent. In the authorization code flow, the user is redirected to an authorization server, logs in, and the client exchanges a code for an access token. OAuth itself handles authorization, and for authentication, it is extended using OpenID Connect.”
+
+
+🔹 SSO (Single Sign-On)
+Q: What is SSO?
+→ Login once and access multiple applications without re-authentication.
+Q: How does SSO work?
+→ User logs in via IdP → gets token/session → reused across apps.
+Q: What is an IdP?
+→ Identity Provider that authenticates users (e.g., eSignet).
+Q: Session-based SSO vs Token-based SSO?
+→ Session uses cookies; token-based uses JWT.
+Q: SSO vs OIDC?
+→ SSO is concept; OIDC is protocol to implement it.
+
+🔹 Authentication
+Q: What is authentication?
+→ Process of verifying who the user is.
+Q: Example?
+→ Logging in with username & password.
+Q: What does it check?
+→ Identity (are you really Vinod?)
+Q: Common methods?
+→ Passwords, OTP, biometrics, OAuth/OIDC login
+Q: Output of authentication?
+→ Identity proof (session or ID token)
+🔹 Authorization
+Q: What is authorization?
+→ Process of deciding what the user can access.
+Q: Example?
+→ Admin can delete users, normal user cannot.
+Q: What does it check?
+→ Permissions/roles
+Q: Common methods?
+→ RBAC (Role-Based Access Control), scopes, policies
+Q: Output of authorization?
+→ Access granted or denied
+
+Q: Authentication vs Authorization?
+→ Authentication = Who you are
+→ Authorization = What you can do
+🔹 Order of Flow
+Q: Which comes first?
+→ Authentication → then Authorization
+Q: Why?
+→ System must know who you are before deciding permissions.
+🔹 Real Example (Simple)
+Q: Example in app?
+→ Login → authentication
+→ Access dashboard → authorization
+🔹 Real Example (OAuth/OIDC)
+Q: Where does each fit?
+→ OIDC → authentication (identity)
+→ OAuth → authorization (API access)
+🔹 Token Mapping
+Q: Which token is for what?
+→ ID Token → authentication
+→ Access Token → authorization
+🔹 Common Mistakes
+Q: Using only authentication?
+→ User logged in but no permission control
+Q: Mixing both concepts?
+→ Leads to security issues
+
+“Authentication is the process of verifying a user’s identity, such as logging in with credentials, while authorization determines what actions that authenticated user is allowed to perform. Authentication comes first, followed by authorization. For example, OpenID Connect handles authentication by providing identity tokens, while OAuth handles authorization using access tokens.”
+
+
+🔹 Kafka
+Q: What is Kafka?
+→ A distributed event streaming platform.
+Q: What is pub-sub model?
+→ Producers send messages to topics; consumers read them.
+Q: What is a topic?
+→ A category where messages are stored.
+Q: What is partitioning?
+→ Splitting topics into multiple parts for parallel processing.
+Q: What are consumer groups?
+→ Multiple consumers sharing load, each reads a subset of partitions.
+Q: What is event-driven architecture?
+→ Services communicate via events instead of direct API calls.
+
+
+🔹 Elasticsearch
+Q: What is Elasticsearch?
+→ A search engine optimized for fast full-text queries.
+Q: What is an inverted index?
+→ Maps words → documents instead of documents → words.
+Q: What is tokenization?
+→ Breaking text into searchable terms.
+Q: What is ranking (BM25)?
+→ Algorithm to rank results based on relevance.
+
+
+🔹 MinIO
+Q: What is MinIO?
+→ An S3-compatible object storage system.
+Q: What is a bucket?
+→ A container for storing objects (files).
+Q: What is an object?
+→ A file with metadata stored in a bucket.
+Q: What are pre-signed URLs?
+→ Temporary secure URLs to upload/download files directly.
+Q: Why use pre-signed URLs?
+→ Allows clients to upload files without passing through backend.
+
+🔹 Docker
+Q: What is Docker?
+→ A tool to package an application with its dependencies into a container.
+Q: What is a container?
+→ A lightweight, isolated environment that runs an application.
+Q: Container vs Virtual Machine?
+→ Containers share OS kernel (lightweight); VMs have full OS (heavy).
+Q: What is a Docker image?
+→ A read-only template used to create containers.
+Q: What is a Dockerfile?
+→ A script with instructions to build an image.
+Q: What is docker build?
+→ Builds an image from Dockerfile.
+Q: What is docker run?
+→ Runs a container from an image.
+Q: What is layer caching?
+→ Docker reuses unchanged layers to speed up builds.
+Q: Why use Docker?
+→ Ensures consistency across environments (dev, test, prod).
+
+
+🔹 Kubernetes (K8s)
+Q: What is Kubernetes?
+→ A container orchestration system to deploy, scale, and manage containers.
+Q: Why not just Docker?
+→ Docker runs containers; Kubernetes manages them at scale.
+Q: What is a Pod?
+→ Smallest unit in K8s; one or more containers running together.
+Q: What is a Deployment?
+→ Defines how many replicas of a pod should run.
+Q: What is a Service?
+→ Exposes pods via a stable network endpoint.
+Q: What is scaling?
+→ Increasing/decreasing number of pod replicas.
+Q: What is auto-scaling?
+→ Automatically adjusts pods based on CPU/memory/load.
+Q: What is load balancing?
+→ Distributes traffic across multiple pods.
+Q: What happens if a pod crashes?
+→ Kubernetes automatically restarts/replaces it.
+Q: What is a node?
+→ A machine (VM/physical) where pods run.
+Q: What is a cluster?
+→ A group of nodes managed by Kubernetes.
+
+
+🔹 Kubernetes Internals (Important)
+Q: What is the control plane?
+→ Brain of K8s (API server, scheduler, controller manager).
+Q: What is a scheduler?
+→ Decides which node runs a pod.
+Q: What is kubelet?
+→ Agent on each node that runs pods.
+
+🔹 Helm
+Q: What is Helm?
+→ A package manager for Kubernetes.
+Q: What is a Helm chart?
+→ A collection of YAML templates + configs to deploy an app.
+Q: Why use Helm?
+→ Avoid writing repetitive Kubernetes YAML files.
+Q: What is values.yaml?
+→ Central config file for customizing deployments.
+Q: What are templates in Helm?
+→ Parameterized YAML files using variables.
+Q: What is helm install?
+→ Deploys an application to Kubernetes.
+Q: What is helm upgrade?
+→ Updates an existing deployment.
+Q: What is rollback in Helm?
+→ Reverts to a previous version if deployment fails.
+
+
+🔹 How They Work Together (VERY IMPORTANT)
+Q: How do Docker, Kubernetes, and Helm fit together?
+→ Docker → packages app
+→ Kubernetes → runs and manages containers
+→ Helm → manages deployment configs
+
+
+Flow (end-to-end)
+Q: What is the full deployment flow?
+→ Write code → create Dockerfile → build image → push to registry →
+→ Kubernetes pulls image → runs pods →
+→ Helm manages configs and deployment
+🔹 Real Interview-Level Points
+Q: Why Kubernetes?
+→ Auto-scaling, self-healing, load balancing, high availability.
+Q: What is self-healing?
+→ Automatically restarts failed containers.
+Q: What is zero downtime deployment?
+→ Achieved using rolling updates.
+Q: What are ConfigMaps/Secrets used for?
+→ Inject environment-specific configs securely.
+
+“A hydration issue occurs when the server-rendered HTML doesn’t match the client-side React render. This usually happens due to dynamic values like random numbers, browser-only APIs, or conditional rendering differences. React detects this mismatch during hydration and may re-render the UI, affecting performance. The fix is to ensure consistent rendering between server and client, often by moving client-specific logic into useEffect.”
+
+“React uses a virtual DOM and reconciliation algorithm to efficiently update only changed parts of the UI. It optimizes rendering using techniques like batching, memoization, and keys for list diffing. In Next.js, we extend this with SSR, SSG, and ISR for performance and SEO. SSR renders pages on the server and hydration makes them interactive on the client. We also separate server and client components to reduce bundle size and improve performance.”
+
+
+🔹 React Fiber
+🔸 Core Idea
+Q: What is React Fiber?
+→ A new reconciliation engine in React that makes rendering incremental and interruptible.
+Q: Why was Fiber introduced?
+→ Old React (stack-based) blocked the UI during rendering → poor performance for large apps.
+🔹 Problem Before Fiber
+Q: What was the issue with old reconciliation?
+→ Rendering was synchronous (all at once) → UI freeze.
+🔹 Fiber Solution
+Q: What does Fiber change?
+→ Breaks rendering into small units of work (fibers).
+Q: What is a Fiber node?
+→ A JavaScript object representing a component and its work.
+🔹 How Fiber Works
+🔸 1. Work Splitting
+Q: What is work splitting?
+→ Large rendering task is divided into smaller chunks.
+🔸 2. Interruptible Rendering
+Q: What does interruptible mean?
+→ React can pause rendering to handle high-priority tasks (like user input).
+🔸 3. Scheduling
+Q: What is scheduling?
+→ React decides which updates to process first based on priority.
+🔹 Two Phases of Fiber
+🔸 1. Render Phase (Reconciliation)
+Q: What happens here?
+→ Builds new Fiber tree (Virtual DOM)
+→ Can be paused/resumed
+🔸 2. Commit Phase
+Q: What happens here?
+→ Applies changes to real DOM
+→ Always synchronous (fast)
+🔹 Fiber Tree Structure
+Q: How is Fiber stored?
+→ As a linked structure:
+parent
+child
+sibling
+Q: Why linked structure?
+→ Enables traversal and pausing work efficiently.
+🔹 Priority Concept (VERY IMPORTANT)
+Q: How does React prioritize updates?
+→ Assigns priority levels (lanes)
+Q: Example?
+→ User typing → high priority
+→ Data fetching → low priority
+🔹 Key Benefits
+Q: Why Fiber is powerful?
+→ Smooth UI (no blocking)
+→ Better responsiveness
+→ Enables concurrent features
+🔹 Example (Conceptual)
+Q: What happens when typing in input?
+→ React pauses heavy rendering → updates input instantly → resumes work later
+🔹 Fiber vs Old React
+Feature	Old React	Fiber
+Rendering	Synchronous	Incremental
+Interruptible	❌	✅
+Scheduling	❌	✅
+
+Q: Why commit phase is not interruptible?
+→ To avoid inconsistent UI (DOM must stay stable).
+
+“React Fiber is the new reconciliation engine that enables incremental and interruptible rendering. Unlike the old synchronous approach, Fiber breaks rendering into small units of work and schedules them based on priority. It has two phases: a render phase that builds the fiber tree and can be paused, and a commit phase that applies changes to the DOM synchronously. This improves responsiveness and enables features like concurrent rendering.”
+
+
+
+🔹 Nginx
+Q: What is Nginx?
+→ A web server and reverse proxy that handles incoming requests and forwards them to backend services.
+Q: What does Nginx do in backend systems?
+→ Load balancing, SSL termination, caching, routing requests to services.
+Q: What is a reverse proxy?
+→ Nginx sits in front of backend servers and forwards client requests to them.
+🔹 Kubernetes Ingress
+Q: What is Ingress?
+→ A Kubernetes resource that manages external access (HTTP/HTTPS) to services.
+Q: What is an Ingress Controller?
+→ The actual implementation (often Nginx) that processes Ingress rules.
+Q: How do Nginx and Ingress relate?
+→ In Kubernetes, Nginx runs as Ingress Controller to route traffic to services.
+Q: Example flow?
+→ Client → Nginx Ingress → Service → Pod
+🔹 Large Headers Issue
+Q: What are HTTP headers?
+→ Metadata sent with requests (cookies, auth tokens, etc.)
+Q: What is “large header” issue?
+→ When request headers exceed Nginx buffer limits.
+Q: Common error?
+→ 400 Bad Request - Request Header Too Large
+Q: Why does it happen?
+→ Headers (especially cookies or JWTs) exceed configured buffer size.
+Q: Default Nginx limits?
+→ Typically ~4KB–8KB per header buffer.
+🔹 Cookie Size Problem
+Q: Why do cookies cause large headers?
+→ Cookies are sent in every request header.
+Q: Max cookie size?
+→ ~4KB per cookie.
+Q: Why is this a problem?
+→ Multiple cookies → header becomes very large.
+Q: Real-world example?
+→ Storing large JWT or user data in cookies → exceeds limits.
+🔹 Nginx + Ingress Failure Scenario
+Q: What happens in production?
+→ Client sends request with large cookies
+→ Nginx Ingress rejects request
+→ User gets 400 error
+Q: Why specifically in Ingress?
+→ Ingress uses Nginx → same buffer limits apply.
+🔹 Fixes (Nginx / Ingress)
+Q: How to increase header size in Nginx?
+large_client_header_buffers 4 16k;
+Q: In Kubernetes Ingress (Nginx)?
+nginx.ingress.kubernetes.io/proxy-buffer-size: "16k"
+nginx.ingress.kubernetes.io/large-client-header-buffers: "4 16k"
+Q: What do these do?
+→ Increase allowed header size to avoid rejection.
+🔹 Best Practices (VERY IMPORTANT)
+Q: Should we store large data in cookies?
+→ No
+Q: What to store instead?
+→ Only small identifiers (session ID, short token)
+Q: Better alternative?
+→ Store data in backend (DB/Redis) and reference via ID.
+Q: JWT best practice?
+→ Keep JWT small OR store in Authorization header instead of cookies.
+🔹 Interview-Level Insight
+Q: Why large headers are dangerous?
+→ Increase latency + memory usage + can break proxies like Nginx.
+
+“Nginx acts as a reverse proxy and is commonly used as an Ingress controller in Kubernetes to route external traffic to services. Large header issues occur when request headers, especially cookies or JWT tokens, exceed Nginx’s buffer limits, leading to errors like ‘400 Request Header Too Large’. Since cookies are sent with every request and limited to around 4KB each, storing large data in cookies can quickly exceed limits. This can be mitigated by increasing Nginx buffer sizes, but the best practice is to keep cookies small and store data in backend systems instead.”

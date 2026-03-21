@@ -1,10 +1,3 @@
-/**
- * JS CORE CONCEPTS WITH REAL-WORLD EXAMPLES
- * Each section explains the concept + runnable example
- * --------------------------------------------------
- * You can run this file using: node js-core-concepts-explained.js
- */
-
 /* ==================================================
    1. HOISTING
    ==================================================
